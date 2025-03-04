@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "917350267910",
+    "project_id": "relay-me",
+    "storage_bucket": "relay-me.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917350267910:android:f99d3bb47f7fe4dd0b9787",
+        "android_client_info": {
+          "package_name": "com.example.relay_me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxd8BzR2ocsbMdcTOVr0WEao7kYaAVuh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
