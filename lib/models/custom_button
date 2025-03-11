@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+
+class CustomAddButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const CustomAddButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.blue, // Change this if needed
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.5),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: IconButton(
+        icon: Icon(Icons.add, color: Colors.white),
+        iconSize: 24,
+        onPressed: onPressed,
+      ),
+    );
+  }
+}
