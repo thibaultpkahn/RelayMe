@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../controllers/home_controller.dart';
+import 'package:relay_me/global.dart';
 
 class AddContactScreen extends StatefulWidget {
   const AddContactScreen({super.key});
@@ -17,7 +19,6 @@ class _AddContactScreenState extends State<AddContactScreen> {
   final TextEditingController sendMessageController = TextEditingController();
 
   String? selectedCategory;
-  List<String> categories = ["Tech", "Mécaniciens"];
 
   @override
   Widget build(BuildContext context) {
