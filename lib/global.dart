@@ -1,4 +1,4 @@
 // global.dart
-import 'package:relay_me/models/category_model.dart';
+import 'package:relay_me/models/contact_model.dart';
 
-List<String> categories = [];
+Map<String, List<Contact>> categories = {};

@@ -6,12 +6,13 @@ import 'package:relay_me/global.dart';
 class HomeController extends ChangeNotifier {
    
    
-  void addCategory(String name) { //ajoute le nom de la categorie a la liste
-    if (name.isNotEmpty && !categories.any((c) => c == name)) {
-      categories.add(name);
-      notifyListeners();
-    }
+void addCategory(String name) {
+  if (name.isNotEmpty && !categories.containsKey(name)) {
+    categories[name] = []; // Ajoute une nouvelle catégorie avec une liste vide de contacts
+    notifyListeners(); // Notifie les widgets écoutant ce changement
   }
+}
+  
 
   void showAddCategoryPopup(BuildContext context) { //Popup de l'ajout de catégorie
     TextEditingController categoryController = TextEditingController();
@@ -30,7 +31,7 @@ class HomeController extends ChangeNotifier {
             onPressed: () {
             String categoryName = categoryController.text.trim();
             if (categoryName.isNotEmpty) {
-              categories.add(categoryName); // Ajoute la catégorie
+              categories[categoryName] = []; // Ajoute une nouvelle catégorie avec une liste vide de contacts
               Navigator.pop(context);
               (context as Element).markNeedsBuild(); // Force le rebuild
             }
@@ -69,6 +70,7 @@ class HomeController extends ChangeNotifier {
   Widget buildContactPage(BuildContext context,String text) { // nouvelle page creation de contact à agencer
   return ElevatedButton(
       onPressed: () {
+        Navigator.pop(context);
             // NAVIGATION VERS L'AUTRE PAGE
             Navigator.push(
               context,
@@ -89,6 +91,7 @@ class HomeController extends ChangeNotifier {
   Widget buildPopupCategorie(BuildContext context, String text) {  // A Faire popup choix de la nouvelle categorie
     return ElevatedButton(
       onPressed: () {
+        Navigator.pop(context);
         showAddCategoryPopup(context);
       },
       

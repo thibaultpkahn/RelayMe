@@ -112,7 +112,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
               const SizedBox(height: 15),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
-                items: categories.map((category) {
+                items: categories.keys.map((category) {
                   return DropdownMenuItem(
                     value: category,
                     child: Text(category),
