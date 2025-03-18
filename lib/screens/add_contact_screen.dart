@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/home_controller.dart';
 import 'package:relay_me/global.dart';
+import 'package:relay_me/theme/colors.dart';
 
 class AddContactScreen extends StatefulWidget {
   const AddContactScreen({super.key});
@@ -20,29 +21,71 @@ class _AddContactScreenState extends State<AddContactScreen> {
 
   String? selectedCategory;
 
+  /// Widget réutilisable pour éviter la répétition des TextField
+  Widget buildTextField({
+    required String label,
+    required TextEditingController controller,
+    bool isMultiline = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: AppColors.whiteText)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          style: const TextStyle(color: AppColors.whiteText),
+          minLines: isMultiline ? 3 : 1,
+          maxLines: isMultiline ? 5 : 1,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Ajout de contact")),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text("Ajout de contact", style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.whiteText),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: firstNameController,
-                decoration: const InputDecoration(labelText: "Prénom"),
-              ),
-              TextField(
-                controller: lastNameController,
-                decoration: const InputDecoration(labelText: "Nom"),
-              ),
-              TextField(
-                controller: jobController,
-                decoration: const InputDecoration(labelText: "Métier"),
-              ),
+              const SizedBox(height: 16),
+              buildTextField(label: "Prénom", controller: firstNameController),
+              buildTextField(label: "Nom", controller: lastNameController),
+              buildTextField(label: "Métier", controller: jobController),
+              
+              // Dropdown pour la catégorie
+              const Text("Catégorie", style: TextStyle(color: AppColors.whiteText)),
+              const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
+                dropdownColor: AppColors.secondary,
+                style: const TextStyle(color: AppColors.whiteText),
                 items: categories.keys.map((category) {
                   return DropdownMenuItem(
                     value: category,
@@ -54,36 +97,61 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     selectedCategory = value;
                   });
                 },
-                decoration: const InputDecoration(labelText: "Catégorie"),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                ),
               ),
-              TextField(
-                controller: phoneController,
-                decoration: const InputDecoration(labelText: "Numéro de téléphone"),
-              ),
-              TextField(
-                controller: requestMessageController,
-                decoration: const InputDecoration(labelText: "Message de demande d'autorisation"),
-              ),
-              TextField(
-                controller: notifyMessageController,
-                decoration: const InputDecoration(labelText: "Message pour prévenir le contact"),
-              ),
-              TextField(
-                controller: sendMessageController,
-                decoration: const InputDecoration(labelText: "Message d'envoi de contact"),
+              const SizedBox(height: 16),
+
+              buildTextField(label: "Numéro de téléphone", controller: phoneController),
+              buildTextField(
+                  label: "Message de demande d'autorisation",
+                  controller: requestMessageController,
+                  isMultiline: true),
+              buildTextField(
+                  label: "Message pour prévenir le contact",
+                  controller: notifyMessageController,
+                  isMultiline: true),
+              buildTextField(
+                  label: "Message d'envoi de contact",
+                  controller: sendMessageController,
+                  isMultiline: true),
+
+              const SizedBox(height: 32),
+
+              // Bouton de création
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (sendMessageController.text.trim().isNotEmpty &&
+                        notifyMessageController.text.trim().isNotEmpty &&
+                        requestMessageController.text.trim().isNotEmpty &&
+                        phoneController.text.trim().isNotEmpty &&
+                        lastNameController.text.trim().isNotEmpty &&
+                        selectedCategory != null) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: const Text("Créer", style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if(sendMessageController.text.trim().isNotEmpty && notifyMessageController.text.trim().isNotEmpty && requestMessageController.text.trim().isNotEmpty && phoneController.text.trim().isNotEmpty && lastNameController.text.trim().isNotEmpty && selectedCategory != null)
-                  {
-                    Navigator.pop(context);
-
-                  }
-                  
-                },
-                child: const Text("Créer"),
-              ),
             ],
           ),
         ),
