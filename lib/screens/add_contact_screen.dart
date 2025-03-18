@@ -43,7 +43,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
               ),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
-                items: categories.map((category) {
+                items: categories.keys.map((category) {
                   return DropdownMenuItem(
                     value: category,
                     child: Text(category),
@@ -78,7 +78,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   if(sendMessageController.text.trim().isNotEmpty && notifyMessageController.text.trim().isNotEmpty && requestMessageController.text.trim().isNotEmpty && phoneController.text.trim().isNotEmpty && lastNameController.text.trim().isNotEmpty && selectedCategory != null)
                   {
                     Navigator.pop(context);
-                    
+
                   }
                   
                 },
