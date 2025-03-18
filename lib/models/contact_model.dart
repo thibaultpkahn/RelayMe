@@ -1,45 +1,50 @@
+import 'category_model.dart';
 class Contact {
   final String firstName;
   final String lastName;
-  final String jobTitle;
+  final String job;
+  final Category category;
   final String phoneNumber;
-  String authorizationMessage;
-  String notificationMessage;
-  String contactMessage;
+  final String requestMessage;
+  final String notifyMessage;
+  final String sendMessage;
 
   Contact({
     required this.firstName,
     required this.lastName,
-    required this.jobTitle,
+    required this.job,
+    required this.category,
     required this.phoneNumber,
-    this.authorizationMessage = "",
-    this.notificationMessage = "",
-    this.contactMessage = "",
+    required this.requestMessage,
+    required this.notifyMessage,
+    required this.sendMessage,
   });
 
-  // Convertir un contact en Map (pour stockage Firebase ou autre DB)
+  // Convertir un contact en Map pour la firebase
   Map<String, dynamic> toMap() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'jobTitle': jobTitle,
-      'phoneNumber': phoneNumber,
-      'authorizationMessage': authorizationMessage,
-      'notificationMessage': notificationMessage,
-      'contactMessage': contactMessage,
+      "firstName": firstName,
+      "lastName": lastName,
+      "job": job,
+      "category": category.toMap(),
+      "phoneNumber": phoneNumber,
+      "requestMessage": requestMessage,
+      "notifyMessage": notifyMessage,
+      "sendMessage": sendMessage,
     };
   }
 
-  // Créer un contact depuis un Map (ex: récupération Firebase)
+  // Créer un contact à partir d'une Map pour que la firebase puisse bien les récupérer
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
-      jobTitle: map['jobTitle'] ?? '',
-      phoneNumber: map['phoneNumber'] ?? '',
-      authorizationMessage: map['authorizationMessage'] ?? '',
-      notificationMessage: map['notificationMessage'] ?? '',
-      contactMessage: map['contactMessage'] ?? '',
+      firstName: map["firstName"] ?? "",
+      lastName: map["lastName"] ?? "",
+      job: map["job"] ?? "",
+      category: Category.fromMap(map["category"] ?? {}),
+      phoneNumber: map["phoneNumber"] ?? "",
+      requestMessage: map["requestMessage"] ?? "",
+      notifyMessage: map["notifyMessage"] ?? "",
+      sendMessage: map["sendMessage"] ?? "",
     );
   }
 }
