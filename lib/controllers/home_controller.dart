@@ -12,6 +12,7 @@ class HomeController extends ChangeNotifier {
       notifyListeners();
     }
   }
+  
 
   void showAddCategoryPopup(BuildContext context) { //Popup de l'ajout de catégorie
     TextEditingController categoryController = TextEditingController();
@@ -69,6 +70,7 @@ class HomeController extends ChangeNotifier {
   Widget buildContactPage(BuildContext context,String text) { // nouvelle page creation de contact à agencer
   return ElevatedButton(
       onPressed: () {
+        Navigator.pop(context);
             // NAVIGATION VERS L'AUTRE PAGE
             Navigator.push(
               context,
@@ -89,6 +91,7 @@ class HomeController extends ChangeNotifier {
   Widget buildPopupCategorie(BuildContext context, String text) {  // A Faire popup choix de la nouvelle categorie
     return ElevatedButton(
       onPressed: () {
+        Navigator.pop(context);
         showAddCategoryPopup(context);
       },
       

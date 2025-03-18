@@ -75,7 +75,12 @@ class _AddContactScreenState extends State<AddContactScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  if(sendMessageController.text.trim().isNotEmpty && notifyMessageController.text.trim().isNotEmpty && requestMessageController.text.trim().isNotEmpty && phoneController.text.trim().isNotEmpty && lastNameController.text.trim().isNotEmpty && selectedCategory != null)
+                  {
+                    Navigator.pop(context);
+                    
+                  }
+                  
                 },
                 child: const Text("Créer"),
               ),
