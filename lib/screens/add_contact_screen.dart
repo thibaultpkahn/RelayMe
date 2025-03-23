@@ -22,8 +22,10 @@ class _AddContactScreenState extends State<AddContactScreen> {
   String? selectedCategory;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> _saveContact() async {
-    try {
+  Future<void> _saveContact() async 
+  {
+    if (firstNameController.text!="" && lastNameController.text != "" && jobController.text != "" && phoneController.text != "" && selectedCategory!= null && requestMessageController.text!= "" && notifyMessageController.text!= "" && sendMessageController.text!= ""){
+      try {
       await _firestore.collection('contacts').add({
         'firstName': firstNameController.text,
         'lastName': lastNameController.text,
@@ -56,6 +58,18 @@ class _AddContactScreenState extends State<AddContactScreen> {
         ),
       );
     }
+  }
+  else{
+    // Afficher un message d'echec
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Veuiller compléter tous les champs !'),
+          backgroundColor: Colors.red,
+        ),
+      );
+  }
+    
   }
 
   void _resetForm() {

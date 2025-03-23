@@ -1,4 +1,4 @@
 // global.dart
-import 'package:relay_me/models/contact_model.dart';
+import 'package:relay_me/models/contact_detail.dart';
 
-Map<String, List<Contact>> categories = {};
+Map<String, List<ContactDetailPage>> categories = {};
