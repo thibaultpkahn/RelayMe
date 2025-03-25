@@ -21,8 +21,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
   final TextEditingController sendMessageController = TextEditingController();
 
   String? selectedCategory;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// Widget réutilisable pour éviter la répétition des TextField
   Widget buildTextField({
     required String label,
     required TextEditingController controller,
@@ -55,6 +55,62 @@ class _AddContactScreenState extends State<AddContactScreen> {
     );
   }
 
+  Future<void> _saveContact() async {
+    if (!_validateFields()) {
+      _showSnackBar('Veuillez remplir tous les champs obligatoires', Colors.red);
+      return;
+    }
+
+    try {
+      await _firestore.collection('contacts').add({
+        'firstName': firstNameController.text,
+        'lastName': lastNameController.text,
+        'job': jobController.text,
+        'phone': phoneController.text,
+        'category': selectedCategory,
+        'requestMessage': requestMessageController.text,
+        'notifyMessage': notifyMessageController.text,
+        'sendMessage': sendMessageController.text,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      _showSnackBar('Contact créé avec succès !', Colors.green);
+      _resetForm();
+    } catch (e) {
+      _showSnackBar('Erreur: $e', Colors.red);
+    }
+  }
+
+  bool _validateFields() {
+    return sendMessageController.text.trim().isNotEmpty &&
+        notifyMessageController.text.trim().isNotEmpty &&
+        requestMessageController.text.trim().isNotEmpty &&
+        phoneController.text.trim().isNotEmpty &&
+        lastNameController.text.trim().isNotEmpty &&
+        selectedCategory != null;
+  }
+
+  void _resetForm() {
+    firstNameController.clear();
+    lastNameController.clear();
+    jobController.clear();
+    phoneController.clear();
+    requestMessageController.clear();
+    notifyMessageController.clear();
+    sendMessageController.clear();
+    setState(() => selectedCategory = null);
+  }
+
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +118,19 @@ class _AddContactScreenState extends State<AddContactScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("Ajout de contact", style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold)),
+        title: const Text("Ajout de contact", 
+            style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.whiteText),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.clear, color: AppColors.whiteText),
+            onPressed: _resetForm,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -80,7 +143,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
               buildTextField(label: "Nom", controller: lastNameController),
               buildTextField(label: "Métier", controller: jobController),
               
-              // Dropdown pour la catégorie
+              // Catégorie Dropdown
               const Text("Catégorie", style: TextStyle(color: AppColors.whiteText)),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
@@ -93,11 +156,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                     child: Text(category),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                },
+                onChanged: (value) => setState(() => selectedCategory = value),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -133,23 +192,15 @@ class _AddContactScreenState extends State<AddContactScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (sendMessageController.text.trim().isNotEmpty &&
-                        notifyMessageController.text.trim().isNotEmpty &&
-                        requestMessageController.text.trim().isNotEmpty &&
-                        phoneController.text.trim().isNotEmpty &&
-                        lastNameController.text.trim().isNotEmpty &&
-                        selectedCategory != null) {
-                      Navigator.pop(context);
-                    }
-                  },
+                  onPressed: _saveContact,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
                   ),
-                  child: const Text("Créer", style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: const Text("Créer", 
+                      style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
               const SizedBox(height: 20),
