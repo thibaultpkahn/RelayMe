@@ -29,23 +29,62 @@ class HomeController extends ChangeNotifier {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.black,
-        title: const Text("Ajout de catégorie", style: TextStyle(color: Colors.white)),
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Coins arrondis
+          side: const BorderSide(
+            color: Colors.blue, // Contour bleu
+            width: 0.5, // Épaisseur du contour
+          ),
+        ),
+        title: const Text("Ajout de catégorie", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         content: TextField(
           controller: categoryController,
-          decoration: const InputDecoration(labelText: "Nom de la catégorie"),
+          style: const TextStyle(color: AppColors.whiteText),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          ),
         ),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              String categoryName = categoryController.text.trim();
-              if (categoryName.isNotEmpty) {
-                categories[categoryName] = [];
-                Navigator.pop(context);
-                setState(() {}); // Rafraîchir l'UI
-              }
-            },
-            child: const Text("Ajouter"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 200, // Ajuste la largeur selon tes besoins
+                child: ElevatedButton(
+                  onPressed: () {
+                    String categoryName = categoryController.text.trim();
+                    if (categoryName.isNotEmpty) {
+                      categories[categoryName] = [];
+                      Navigator.pop(context);
+                      setState(() {});
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: const Text(
+                    "Ajouter",
+                    style: TextStyle(
+                      color: AppColors.blackText,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
