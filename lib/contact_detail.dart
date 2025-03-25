@@ -1,18 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ContactDetailPage extends StatelessWidget {
-  final String name;
-  final String job;
-  final String company;
-  final String category;
+  final QueryDocumentSnapshot contact;
 
-  const ContactDetailPage({
-    Key? key,
-    required this.name,
-    required this.job,
-    required this.company,
-    required this.category,
-  }) : super(key: key);
+  const ContactDetailPage({super.key, required this.contact});
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +34,10 @@ class ContactDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                  Text(contact["name"], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
                   const SizedBox(height: 8),
-                  Text(job, style: const TextStyle(fontSize: 16, color: Colors.white70)),
-                  Text(company, style: const TextStyle(fontSize: 16, color: Colors.white70)),
+                  Text(contact["job"], style: const TextStyle(fontSize: 16, color: Colors.white70)),
+                  Text(contact["company"], style: const TextStyle(fontSize: 16, color: Colors.white70)),
                   const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerRight,
@@ -55,7 +47,7 @@ class ContactDetailPage extends StatelessWidget {
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(category, style: const TextStyle(color: Colors.white)),
+                      child: Text(contact["category"], style: const TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
