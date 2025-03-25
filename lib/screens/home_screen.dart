@@ -186,7 +186,7 @@ class ContactCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.background,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: AppColors.primary, width: 1),
+          border: Border.all(color: AppColors.primary, width: 0.5),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

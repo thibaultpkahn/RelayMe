@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relay_me/theme/colors.dart';
 import '../screens/add_contact_screen.dart';
 import '../models/category_model.dart';
 import 'package:relay_me/global.dart';
@@ -28,23 +29,75 @@ class HomeController extends ChangeNotifier {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.black,
-        title: const Text("Ajout de catégorie", style: TextStyle(color: Colors.white)),
-        content: TextField(
-          controller: categoryController,
-          decoration: const InputDecoration(labelText: "Nom de la catégorie"),
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: const BorderSide(
+            color: Colors.blue,
+            width: 0.5,
+          ),
+        ),
+        title: const Center( // Centre le titre
+          child: Text(
+            "Ajout de catégorie",
+            style: TextStyle(color: AppColors.whiteText, fontWeight: FontWeight.bold),
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start, // Alignement à gauche pour toute la colonne
+          children: [
+            const Text(
+              "Nom de la catégorie",
+              style: TextStyle(color: AppColors.whiteText),
+            ),
+            TextField(
+              controller: categoryController,
+              style: const TextStyle(color: AppColors.whiteText),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              ),
+            ),
+          ],
         ),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              String categoryName = categoryController.text.trim();
-              if (categoryName.isNotEmpty) {
-                categories[categoryName] = [];
-                Navigator.pop(context);
-                setState(() {}); // Rafraîchir l'UI
-              }
-            },
-            child: const Text("Ajouter"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  String categoryName = categoryController.text.trim();
+                  if (categoryName.isNotEmpty) {
+                    categories[categoryName] = [];
+                    Navigator.pop(context);
+                    setState(() {});
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: const Text(
+                  "Ajouter",
+                  style: TextStyle(
+                    color: AppColors.blackText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -56,9 +109,13 @@ class HomeController extends ChangeNotifier {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.blueGrey[900],
+          backgroundColor: AppColors.background,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
+            side: const BorderSide(
+              color: AppColors.primary, // Couleur de la bordure
+              width: 0.5, // Épaisseur de la bordure
+            ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -89,7 +146,7 @@ class HomeController extends ChangeNotifier {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      child: Text(text, style: const TextStyle(color: AppColors.blackText)),
     );
   }
 
@@ -106,7 +163,7 @@ class HomeController extends ChangeNotifier {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      child: Text(text, style: const TextStyle(color: AppColors.blackText)),
     );
   }
 }
