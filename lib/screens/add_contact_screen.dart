@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../controllers/home_controller.dart';
 import 'package:relay_me/global.dart';
+import 'package:relay_me/theme/colors.dart';
 
 class AddContactScreen extends StatefulWidget {
   const AddContactScreen({super.key});
@@ -20,172 +21,138 @@ class _AddContactScreenState extends State<AddContactScreen> {
   final TextEditingController sendMessageController = TextEditingController();
 
   String? selectedCategory;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> _saveContact() async 
-  {
-    if (firstNameController.text!="" && lastNameController.text != "" && jobController.text != "" && phoneController.text != "" && selectedCategory!= null && requestMessageController.text!= "" && notifyMessageController.text!= "" && sendMessageController.text!= ""){
-      try {
-      await _firestore.collection('contacts').add({
-        'firstName': firstNameController.text,
-        'lastName': lastNameController.text,
-        'job': jobController.text,
-        'phone': phoneController.text,
-        'category': selectedCategory,
-        'requestMessage': requestMessageController.text,
-        'notifyMessage': notifyMessageController.text,
-        'sendMessage': sendMessageController.text,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      // Afficher un message de succès
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Contact sauvegardé avec succès !'),
-          backgroundColor: Colors.green,
+  /// Widget réutilisable pour éviter la répétition des TextField
+  Widget buildTextField({
+    required String label,
+    required TextEditingController controller,
+    bool isMultiline = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: AppColors.whiteText)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          style: const TextStyle(color: AppColors.whiteText),
+          minLines: isMultiline ? 3 : 1,
+          maxLines: isMultiline ? 5 : 1,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.primary, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          ),
         ),
-      );
-
-      // Réinitialiser le formulaire
-      _resetForm();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Erreur: $e"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-  else{
-    // Afficher un message d'echec
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuiller compléter tous les champs !'),
-          backgroundColor: Colors.red,
-        ),
-      );
-  }
-    
-  }
-
-  void _resetForm() {
-    firstNameController.clear();
-    lastNameController.clear();
-    jobController.clear();
-    phoneController.clear();
-    requestMessageController.clear();
-    notifyMessageController.clear();
-    sendMessageController.clear();
-    setState(() => selectedCategory = null);
+        const SizedBox(height: 16),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Ajout de contact"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: _resetForm,
-          ),
-        ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text("Ajout de contact", style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.whiteText),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: firstNameController,
-                decoration: const InputDecoration(
-                  labelText: "Prénom",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: lastNameController,
-                decoration: const InputDecoration(
-                  labelText: "Nom",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: jobController,
-                decoration: const InputDecoration(
-                  labelText: "Métier",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
+              buildTextField(label: "Prénom", controller: firstNameController),
+              buildTextField(label: "Nom", controller: lastNameController),
+              buildTextField(label: "Métier", controller: jobController),
+              
+              // Dropdown pour la catégorie
+              const Text("Catégorie", style: TextStyle(color: AppColors.whiteText)),
+              const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
+                dropdownColor: AppColors.secondary,
+                style: const TextStyle(color: AppColors.whiteText),
                 items: categories.keys.map((category) {
                   return DropdownMenuItem(
                     value: category,
                     child: Text(category),
                   );
                 }).toList(),
-                onChanged: (value) => setState(() => selectedCategory = value),
-                decoration: const InputDecoration(
-                  labelText: "Catégorie",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) => value == null ? 'Champs requis' : null,
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: "Numéro de téléphone",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: requestMessageController,
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: "Message de demande d'autorisation",
-                  border: OutlineInputBorder(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCategory = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: notifyMessageController,
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: "Message pour prévenir le contact",
-                  border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+
+              buildTextField(label: "Numéro de téléphone", controller: phoneController),
+              buildTextField(
+                  label: "Message de demande d'autorisation",
+                  controller: requestMessageController,
+                  isMultiline: true),
+              buildTextField(
+                  label: "Message pour prévenir le contact",
+                  controller: notifyMessageController,
+                  isMultiline: true),
+              buildTextField(
+                  label: "Message d'envoi de contact",
+                  controller: sendMessageController,
+                  isMultiline: true),
+
+              const SizedBox(height: 32),
+
+              // Bouton de création
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (sendMessageController.text.trim().isNotEmpty &&
+                        notifyMessageController.text.trim().isNotEmpty &&
+                        requestMessageController.text.trim().isNotEmpty &&
+                        phoneController.text.trim().isNotEmpty &&
+                        lastNameController.text.trim().isNotEmpty &&
+                        selectedCategory != null) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: const Text("Créer", style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: sendMessageController,
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  labelText: "Message d'envoi de contact",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 25),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.save),
-                label: const Text("Sauvegarder",
-                    style: TextStyle(fontSize: 18)),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 30, vertical: 15),
-                ),
-                onPressed: _saveContact,
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
