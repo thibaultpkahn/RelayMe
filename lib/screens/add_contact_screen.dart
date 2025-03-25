@@ -114,12 +114,15 @@ class _AddContactScreenState extends State<AddContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.transparent, // Remplace AppColors.background
+      extendBodyBehindAppBar: true, // Permet au gradient de s'étendre derrière l'AppBar
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent, // Rendre l'AppBar transparente
         elevation: 0,
-        title: const Text("Ajout de contact", 
-            style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Ajout de contact",
+          style: TextStyle(color: AppColors.title, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.whiteText),
@@ -132,79 +135,104 @@ class _AddContactScreenState extends State<AddContactScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              buildTextField(label: "Prénom", controller: firstNameController),
-              buildTextField(label: "Nom", controller: lastNameController),
-              buildTextField(label: "Métier", controller: jobController),
-              
-              // Catégorie Dropdown
-              const Text("Catégorie", style: TextStyle(color: AppColors.whiteText)),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                dropdownColor: AppColors.secondary,
-                style: const TextStyle(color: AppColors.whiteText),
-                items: categories.keys.map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() => selectedCategory = value),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.primary, width: 1),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                ),
-              ),
-              const SizedBox(height: 16),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment.center, // Centre du gradient
+            radius: 1.0, // Étendue du gradient
+            colors: [
+              Colors.black, // Noir au centre
+              Color(0xFF0D1B2A), // Bleu très foncé sur les bords
+            ],
+            stops: [0.0, 1.0], // Transition entre les couleurs
+          ),
+        ),
+        child: SafeArea( // Ajout de SafeArea pour respecter la barre de statut
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  buildTextField(label: "Prénom", controller: firstNameController),
+                  buildTextField(label: "Nom", controller: lastNameController),
+                  buildTextField(label: "Métier", controller: jobController),
 
-              buildTextField(label: "Numéro de téléphone", controller: phoneController),
-              buildTextField(
-                  label: "Message de demande d'autorisation",
-                  controller: requestMessageController,
-                  isMultiline: true),
-              buildTextField(
-                  label: "Message pour prévenir le contact",
-                  controller: notifyMessageController,
-                  isMultiline: true),
-              buildTextField(
-                  label: "Message d'envoi de contact",
-                  controller: sendMessageController,
-                  isMultiline: true),
-
-              const SizedBox(height: 32),
-
-              // Bouton de création
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _saveContact,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
+                  // Catégorie Dropdown
+                  const Text("Catégorie",
+                      style: TextStyle(color: AppColors.whiteText)),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    value: selectedCategory,
+                    dropdownColor: AppColors.secondary,
+                    style: const TextStyle(color: AppColors.whiteText),
+                    items: categories.keys.map((category) {
+                      return DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) => setState(() => selectedCategory = value),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: AppColors.primary, width: 0.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: AppColors.primary, width: 1),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     ),
                   ),
-                  child: const Text("Créer", 
-                      style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold)),
-                ),
+                  const SizedBox(height: 16),
+
+                  buildTextField(
+                      label: "Numéro de téléphone", controller: phoneController),
+                  buildTextField(
+                      label: "Message de demande d'autorisation",
+                      controller: requestMessageController,
+                      isMultiline: true),
+                  buildTextField(
+                      label: "Message pour prévenir le contact",
+                      controller: notifyMessageController,
+                      isMultiline: true),
+                  buildTextField(
+                      label: "Message d'envoi de contact",
+                      controller: sendMessageController,
+                      isMultiline: true),
+
+                  const SizedBox(height: 32),
+
+                  // Bouton de création
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: _saveContact,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      child: const Text(
+                        "Créer",
+                        style: TextStyle(
+                            color: AppColors.blackText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 20),
-            ],
+            ),
           ),
         ),
       ),
