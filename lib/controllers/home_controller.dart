@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import '../screens/add_contact_screen.dart';
 import '../models/category_model.dart';
 import 'package:relay_me/global.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeController extends ChangeNotifier {
-   
-   
-void addCategory(String name) {
-  if (name.isNotEmpty && !categories.containsKey(name)) {
-    categories[name] = []; // Ajoute une nouvelle catégorie avec une liste vide de contacts
-    notifyListeners(); // Notifie les widgets écoutant ce changement
+  
+  Future <void> addCategory(String name) async {
+  if (name.isNotEmpty) {
+    try {
+      await FirebaseFirestore.instance.collection('categories').doc(name).set({
+        'name': name,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      notifyListeners(); // Met à jour l'interface utilisateur
+    } catch (e) {
+      print("Erreur lors de l'ajout de la catégorie : $e");
+    }
   }
 }
-  
 
-  void showAddCategoryPopup(BuildContext context) { //Popup de l'ajout de catégorie
+
+  void showAddCategoryPopup(BuildContext context, Function setState) {
     TextEditingController categoryController = TextEditingController();
 
     showDialog(
@@ -29,13 +37,13 @@ void addCategory(String name) {
         actions: [
           ElevatedButton(
             onPressed: () {
-            String categoryName = categoryController.text.trim();
-            if (categoryName.isNotEmpty) {
-              categories[categoryName] = []; // Ajoute une nouvelle catégorie avec une liste vide de contacts
-              Navigator.pop(context);
-              (context as Element).markNeedsBuild(); // Force le rebuild
-            }
-          },
+              String categoryName = categoryController.text.trim();
+              if (categoryName.isNotEmpty) {
+                categories[categoryName] = [];
+                Navigator.pop(context);
+                setState(() {}); // Rafraîchir l'UI
+              }
+            },
             child: const Text("Ajouter"),
           ),
         ],
@@ -43,9 +51,7 @@ void addCategory(String name) {
     );
   }
 
-
-
-  void showPopupMenu(BuildContext context) {
+  void showPopupMenu(BuildContext context, Function setState) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -57,7 +63,7 @@ void addCategory(String name) {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              buildPopupCategorie(context, "Ajout d’une catégorie"),
+              buildPopupCategorie(context, "Ajout d’une catégorie", setState),
               const SizedBox(height: 10),
               buildContactPage(context, "Ajout d’un contact"),
             ],
@@ -67,16 +73,15 @@ void addCategory(String name) {
     );
   }
 
-  Widget buildContactPage(BuildContext context,String text) { // nouvelle page creation de contact à agencer
-  return ElevatedButton(
+  Widget buildContactPage(BuildContext context, String text) {
+    return ElevatedButton(
       onPressed: () {
         Navigator.pop(context);
-            // NAVIGATION VERS L'AUTRE PAGE
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddContactScreen()),
-            );
-          },
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddContactScreen()),
+        );
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 45),
@@ -86,15 +91,14 @@ void addCategory(String name) {
       ),
       child: Text(text, style: const TextStyle(color: Colors.white)),
     );
-}
+  }
 
-  Widget buildPopupCategorie(BuildContext context, String text) {  // A Faire popup choix de la nouvelle categorie
+  Widget buildPopupCategorie(BuildContext context, String text, Function setState) {
     return ElevatedButton(
       onPressed: () {
         Navigator.pop(context);
-        showAddCategoryPopup(context);
+        showAddCategoryPopup(context, setState);
       },
-      
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 45),
