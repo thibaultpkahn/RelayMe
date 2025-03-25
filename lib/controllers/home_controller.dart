@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relay_me/theme/colors.dart';
 import '../screens/add_contact_screen.dart';
 import '../models/category_model.dart';
 import 'package:relay_me/global.dart';
@@ -56,9 +57,13 @@ class HomeController extends ChangeNotifier {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.blueGrey[900],
+          backgroundColor: AppColors.background,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
+            side: const BorderSide(
+              color: AppColors.primary, // Couleur de la bordure
+              width: 0.5, // Épaisseur de la bordure
+            ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -89,7 +94,7 @@ class HomeController extends ChangeNotifier {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      child: Text(text, style: const TextStyle(color: AppColors.blackText)),
     );
   }
 
@@ -106,7 +111,7 @@ class HomeController extends ChangeNotifier {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      child: Text(text, style: const TextStyle(color: AppColors.blackText)),
     );
   }
 }
