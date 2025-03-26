@@ -33,7 +33,7 @@ class HomeController extends ChangeNotifier {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
           side: const BorderSide(
-            color: Colors.blue,
+            color: AppColors.primary,
             width: 0.5,
           ),
         ),
@@ -148,7 +148,7 @@ class HomeController extends ChangeNotifier {
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.primary,
         minimumSize: const Size(double.infinity, 45),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
@@ -165,7 +165,7 @@ class HomeController extends ChangeNotifier {
         showAddCategoryPopup(context, setState);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.primary,
         minimumSize: const Size(double.infinity, 45),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
