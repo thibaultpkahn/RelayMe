@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:relay_me/controllers/home_controller.dart';
+import 'package:relay_me/screens/AuthorizationRequestScreen.dart';
 
 class ContactDetailScreen extends StatelessWidget {
   final QueryDocumentSnapshot contact;
@@ -31,9 +33,61 @@ class ContactDetailScreen extends StatelessWidget {
             const Text("Actions", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
 
-            ActionButton(label: "Demander son autorisation", message: contact["requestMessage"]),
-            ActionButton(label: "Le prévenir sur partage", message: contact["notifyMessage"]),
-            ActionButton(label: "Partager ce contact", message: contact["sendMessage"]),
+
+            Column(
+  children: [
+    ActionButton(
+      label: "Demander l'autorisation",
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AuthorizationRequestScreen(
+              contactName: contact["firstName"] + " " + contact["lastName"],
+              job: contact["job"],
+              category: contact["category"],
+              initialMessage: contact["requestMessage"],
+            ),
+          ),
+        );
+      },
+    ),
+    const SizedBox(height: 10),
+    ActionButton(
+      label: "Prévenir sur le partage",
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AuthorizationRequestScreen(
+              contactName: contact["firstName"] + " " + contact["lastName"],
+              job: contact["job"],
+              category: contact["category"],
+              initialMessage: contact["sendMessage"],
+            ),
+          ),
+        );
+      },
+    ),
+    const SizedBox(height: 10),
+    ActionButton(
+      label: "Partager ce contact",
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AuthorizationRequestScreen(
+              contactName: contact["firstName"] + " " + contact["lastName"],
+              job: contact["job"],
+              category: contact["category"],
+              initialMessage: contact["notifyMessage"],
+            ),
+          ),
+        );
+      },
+    ),
+  ],
+),
 
             const Spacer(),
 
@@ -44,6 +98,7 @@ class ContactDetailScreen extends StatelessWidget {
                 child: const Icon(Icons.edit, color: Colors.white),
                 onPressed: () {
                   // Action d’édition (à implémenter plus tard)
+
                 },
               ),
             ),
@@ -56,30 +111,22 @@ class ContactDetailScreen extends StatelessWidget {
 
 class ActionButton extends StatelessWidget {
   final String label;
-  final String message;
+  final VoidCallback onPressed;
 
-  const ActionButton({super.key, required this.label, required this.message});
+  const ActionButton({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-          ),
-          onPressed: () {
-            // Afficher un message en appuyant sur le bouton
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Message envoyé : $message")),
-            );
-          },
-          child: Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          backgroundColor: Colors.blue,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         ),
+        onPressed: onPressed,
+        child: Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       ),
     );
   }

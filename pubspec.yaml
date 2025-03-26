@@ -12,10 +12,11 @@ dependencies:
   firebase_core: ^3.12.1  # Nécessaire pour utiliser Firebase
   cloud_firestore: ^5.6.5  # Pour interagir avec Firestore
   firebase_storage: ^12.4.4  # Pour gérer l'upload et la récupération de fichiers depuis Firebase Storage
+  url_launcher: ^6.1.14
 
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
+  
 flutter:
   uses-material-design: true
