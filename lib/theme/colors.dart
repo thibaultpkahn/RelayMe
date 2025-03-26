@@ -8,4 +8,5 @@ class AppColors {
   static const Color title = Color(0xFFFFFFFF);
   static const Color background = Color(0xFF0E0F1A);
   static const Color tertiary = Color(0xFF060E18);
+  static const Color grayText = Colors.grey;
 }
