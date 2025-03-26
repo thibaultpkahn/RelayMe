@@ -79,32 +79,70 @@ class ContactDetailScreen extends StatelessWidget {
                             Chip(
                               label: Text(
                                 contact["category"],
-                                style: const TextStyle(color: AppColors.primary),
+                                style: const TextStyle(color: AppColors.primary, fontSize: 14),
                               ),
-                              backgroundColor: Color(0xFF021024),
+                              backgroundColor: AppColors.tertiary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(color: Colors.transparent),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         // Métier
-                        Text(
-                          contact["job"],
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: AppColors.whiteText,
-                          ),
+                        // Métier
+                        Row(
+                          children: [
+                            Text(
+                              "Métier : ",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: AppColors.whiteText,
+                              ),
+                            ),
+                            Chip(
+                              label: Text(
+                                contact["job"],
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              backgroundColor: AppColors.tertiary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(color: Colors.transparent),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 8),
                         // Numéro de téléphone
-                        Text(
-                          "📞 ${contact["phone"]}",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: AppColors.whiteText,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              "Téléphone : ",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: AppColors.whiteText,
+                              ),
+                            ),
+                            Chip(
+                              label: Text(
+                                "📞 ${contact["phone"]}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              backgroundColor: AppColors.tertiary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(color: Colors.transparent),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 20),
                         // Section Actions
