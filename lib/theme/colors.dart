@@ -7,4 +7,5 @@ class AppColors {
   static const Color blackText = Color(0xFF000000);
   static const Color title = Color(0xFFFFFFFF);
   static const Color background = Color(0xFF0E0F1A);
+  static const Color tertiary = Color(0xFF060E18);
 }
