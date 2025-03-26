@@ -33,8 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
             center: Alignment.center, // Centre du gradient
             radius: 1.0, // Étendue du gradient (ajuste selon l'effet désiré)
             colors: [
-              Colors.black, // Noir au centre
-              AppColors.background, // Bleu très foncé sur les bords
+              Colors.black,
+              Color(0xFF0D1B2A),
             ],
             stops: [0.0, 1.0], // Transition entre les couleurs
           ),
