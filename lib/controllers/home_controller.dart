@@ -57,11 +57,11 @@ class HomeController extends ChangeNotifier {
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 0.2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -73,27 +73,35 @@ class HomeController extends ChangeNotifier {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  String categoryName = categoryController.text.trim();
-                  if (categoryName.isNotEmpty) {
-                    categories[categoryName] = [];
-                    Navigator.pop(context);
-                    setState(() {});
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+              SizedBox(
+                width: 150, // Largeur personnalisée
+                height: 50, // Hauteur personnalisée
+                child: ElevatedButton(
+                  onPressed: () {
+                    String categoryName = categoryController.text.trim();
+                    if (categoryName.isNotEmpty) {
+                      categories[categoryName] = [];
+                      Navigator.pop(context);
+                      setState(() {});
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 5,
+                    ), // Padding interne pour ajuster la taille
                   ),
-                ),
-                child: const Text(
-                  "Ajouter",
-                  style: TextStyle(
-                    color: AppColors.blackText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  child: const Text(
+                    "Ajouter",
+                    style: TextStyle(
+                      color: AppColors.blackText,
+                      fontSize: 14, // Taille du texte augmentée
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -143,7 +151,7 @@ class HomeController extends ChangeNotifier {
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 45),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(25),
         ),
       ),
       child: Text(text, style: const TextStyle(color: AppColors.blackText)),
@@ -160,7 +168,7 @@ class HomeController extends ChangeNotifier {
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 45),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(25),
         ),
       ),
       child: Text(text, style: const TextStyle(color: AppColors.blackText)),
