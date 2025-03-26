@@ -168,6 +168,7 @@ class ContactDetailScreen extends StatelessWidget {
                                       job: contact["job"],
                                       category: contact["category"],
                                       initialMessage: contact["requestMessage"],
+                                      phone: contact["phone"],
                                     ),
                                   ),
                                 );
@@ -187,6 +188,7 @@ class ContactDetailScreen extends StatelessWidget {
                                       job: contact["job"],
                                       category: contact["category"],
                                       initialMessage: contact["sendMessage"],
+                                      phone: contact["phone"],
                                     ),
                                   ),
                                 );
@@ -206,6 +208,7 @@ class ContactDetailScreen extends StatelessWidget {
                                       job: contact["job"],
                                       category: contact["category"],
                                       initialMessage: contact["notifyMessage"],
+                                      phone: contact["phone"],
                                     ),
                                   ),
                                 );
