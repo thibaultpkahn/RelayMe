@@ -196,7 +196,7 @@ class ContactCard extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 5),
-            Text(job, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            Text(job, style: const TextStyle(fontSize: 14, color: AppColors.grayText)),
           ],
         ),
       ),

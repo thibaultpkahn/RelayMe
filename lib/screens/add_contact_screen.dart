@@ -31,7 +31,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: AppColors.whiteText)),
+        Text(label, style: const TextStyle(color: AppColors.grayText)),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
@@ -141,8 +141,8 @@ class _AddContactScreenState extends State<AddContactScreen> {
             center: Alignment.center, // Centre du gradient
             radius: 1.0, // Étendue du gradient
             colors: [
-              Colors.black, // Noir au centre
-              Color(0xFF0D1B2A), // Bleu très foncé sur les bords
+              Colors.black,
+              Color(0xFF0D1B2A),
             ],
             stops: [0.0, 1.0], // Transition entre les couleurs
           ),
@@ -161,7 +161,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
 
                   // Catégorie Dropdown
                   const Text("Catégorie",
-                      style: TextStyle(color: AppColors.whiteText)),
+                      style: TextStyle(color: AppColors.grayText)),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
                     value: selectedCategory,

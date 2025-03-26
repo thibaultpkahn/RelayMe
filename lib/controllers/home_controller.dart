@@ -49,7 +49,7 @@ class HomeController extends ChangeNotifier {
           children: [
             const Text(
               "Nom de la catégorie",
-              style: TextStyle(color: AppColors.whiteText),
+              style: TextStyle(color: AppColors.grayText),
             ),
             TextField(
               controller: categoryController,
