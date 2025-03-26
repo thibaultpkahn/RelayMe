@@ -89,16 +89,13 @@ class ContactDetailScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        // Métier
-                        // Métier
                         Row(
                           children: [
                             Text(
                               "Métier : ",
                               style: const TextStyle(
-                                fontSize: 18,
-                                color: AppColors.whiteText,
+                                fontSize: 14,
+                                color: AppColors.grayText,
                               ),
                             ),
                             Chip(
@@ -114,18 +111,18 @@ class ContactDetailScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 side: BorderSide(color: Colors.transparent),
                               ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
                         // Numéro de téléphone
                         Row(
                           children: [
                             Text(
                               "Téléphone : ",
                               style: const TextStyle(
-                                fontSize: 18,
-                                color: AppColors.whiteText,
+                                fontSize: 14,
+                                color: AppColors.grayText,
                               ),
                             ),
                             Chip(
@@ -141,6 +138,7 @@ class ContactDetailScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 side: BorderSide(color: Colors.transparent),
                               ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                             ),
                           ],
                         ),
