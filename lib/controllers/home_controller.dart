@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:relay_me/theme/colors.dart';
 import '../screens/add_contact_screen.dart';
-import '../models/category_model.dart';
-import 'package:relay_me/global.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeController extends ChangeNotifier {
@@ -77,14 +75,14 @@ class HomeController extends ChangeNotifier {
                 width: 150, // Largeur personnalisée
                 height: 50, // Hauteur personnalisée
                 child: ElevatedButton(
-                  onPressed: () {
-                    String categoryName = categoryController.text.trim();
-                    if (categoryName.isNotEmpty) {
-                      categories[categoryName] = [];
-                      Navigator.pop(context);
-                      setState(() {});
-                    }
-                  },
+                  onPressed: () async {
+                      String categoryName = categoryController.text.trim();
+                      if (categoryName.isNotEmpty) {
+                        await addCategory(categoryName); // Ajout dans Firestore
+                        Navigator.pop(context);
+                        setState(() {}); // Mettre à jour l'UI
+                      }
+                    },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(

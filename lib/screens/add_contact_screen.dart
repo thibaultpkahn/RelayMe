@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../controllers/home_controller.dart';
-import 'package:relay_me/global.dart';
+
 import 'package:relay_me/theme/colors.dart';
 
 class AddContactScreen extends StatefulWidget {
@@ -87,7 +86,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
         requestMessageController.text.trim().isNotEmpty &&
         phoneController.text.trim().isNotEmpty &&
         lastNameController.text.trim().isNotEmpty &&
-        selectedCategory != null;
+        selectedCategory != null && selectedCategory != "" ;
   }
 
   void _resetForm() {
@@ -163,32 +162,45 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   const Text("Catégorie",
                       style: TextStyle(color: AppColors.grayText)),
                   const SizedBox(height: 8),
-                  DropdownButtonFormField<String>(
-                    value: selectedCategory,
-                    dropdownColor: AppColors.secondary,
-                    style: const TextStyle(color: AppColors.whiteText),
-                    items: categories.keys.map((category) {
-                      return DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection('categories').snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator(); // Affiche un loader en attendant les données
+                        }
+
+                        var categories = snapshot.data!.docs.map((doc) => doc['name'] as String).toList();
+
+                      return DropdownButtonFormField<String>(
+                        value: selectedCategory,
+                        dropdownColor: AppColors.secondary,
+                        style: const TextStyle(color: AppColors.whiteText),
+                        items: categories.map((category) {
+                          return DropdownMenuItem(
+                            value: category,
+                            child: Text(category, style: const TextStyle(color: AppColors.whiteText)),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCategory = value!;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 0.5),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        ),
                       );
-                    }).toList(),
-                    onChanged: (value) => setState(() => selectedCategory = value),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide:
-                            const BorderSide(color: AppColors.primary, width: 0.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide:
-                            const BorderSide(color: AppColors.primary, width: 1),
-                      ),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    ),
+                    },
                   ),
+
                   const SizedBox(height: 16),
 
                   buildTextField(
