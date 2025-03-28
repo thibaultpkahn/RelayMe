@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
-import 'package:relay_me/theme/colors.dart'; // Assurez-vous d'importer vos couleurs
+import 'package:relay_me/theme/colors.dart';
 
 class AuthorizationRequestScreen extends StatefulWidget {
   final String contactName;
@@ -167,7 +167,6 @@ class _AuthorizationRequestScreenState extends State<AuthorizationRequestScreen>
                             ),
                           ],
                         ),
-                        // Numéro de téléphone
                         Row(
                           children: [
                             Text(

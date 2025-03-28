@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:relay_me/controllers/home_controller.dart';
 import 'package:relay_me/screens/AuthorizationRequestScreen.dart';
 import 'package:relay_me/theme/colors.dart';
 
@@ -31,7 +30,7 @@ class ContactDetailScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-        height: double.infinity, // Étend le gradient sur toute la hauteur
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             center: Alignment.center,
@@ -187,7 +186,7 @@ class ContactDetailScreen extends StatelessWidget {
                                           "${contact["firstName"]} ${contact["lastName"]}",
                                       job: contact["job"],
                                       category: contact["category"],
-                                      initialMessage: contact["sendMessage"],
+                                      initialMessage: contact["notifyMessage"],
                                       phone: contact["phone"],
                                     ),
                                   ),
@@ -207,7 +206,7 @@ class ContactDetailScreen extends StatelessWidget {
                                           "${contact["firstName"]} ${contact["lastName"]}",
                                       job: contact["job"],
                                       category: contact["category"],
-                                      initialMessage: contact["notifyMessage"],
+                                      initialMessage: contact["sendMessage"],
                                       phone: contact["phone"],
                                     ),
                                   ),

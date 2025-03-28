@@ -31,13 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
-            center: Alignment.center, // Centre du gradient
-            radius: 1.0, // Étendue du gradient (ajuste selon l'effet désiré)
+            center: Alignment.center,
+            radius: 1.0,
             colors: [
               Colors.black,
               Color(0xFF0D1B2A),
             ],
-            stops: [0.0, 1.0], // Transition entre les couleurs
+            stops: [0.0, 1.0],
           ),
         ),
         child: SafeArea( // Ajout de SafeArea pour respecter la barre de statut
@@ -81,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Liste des catégories avec contacts en horizontal
                                 Expanded(
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance.collection('categories').snapshots(),
@@ -122,7 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Titre de la catégorie
                                   Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
                                     child: Text(
@@ -131,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
 
-                                  // Liste horizontale des contacts de la catégorie (ou message si vide)
                                   SizedBox(
                                     height: 120,
                                     child: contacts.isNotEmpty

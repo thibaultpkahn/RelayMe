@@ -113,10 +113,10 @@ class _AddContactScreenState extends State<AddContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // Remplace AppColors.background
-      extendBodyBehindAppBar: true, // Permet au gradient de s'étendre derrière l'AppBar
+      backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Rendre l'AppBar transparente
+        backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "Ajout de contact",
@@ -137,16 +137,16 @@ class _AddContactScreenState extends State<AddContactScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
-            center: Alignment.center, // Centre du gradient
-            radius: 1.0, // Étendue du gradient
+            center: Alignment.center,
+            radius: 1.0,
             colors: [
               Colors.black,
               Color(0xFF0D1B2A),
             ],
-            stops: [0.0, 1.0], // Transition entre les couleurs
+            stops: [0.0, 1.0],
           ),
         ),
-        child: SafeArea( // Ajout de SafeArea pour respecter la barre de statut
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
@@ -158,7 +158,6 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   buildTextField(label: "Nom", controller: lastNameController),
                   buildTextField(label: "Métier", controller: jobController),
 
-                  // Catégorie Dropdown
                   const Text("Catégorie",
                       style: TextStyle(color: AppColors.grayText)),
                   const SizedBox(height: 8),
@@ -166,7 +165,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
                       stream: FirebaseFirestore.instance.collection('categories').snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const CircularProgressIndicator(); // Affiche un loader en attendant les données
+                          return const CircularProgressIndicator();
                         }
 
                         var categories = snapshot.data!.docs.map((doc) => doc['name'] as String).toList();
@@ -220,7 +219,6 @@ class _AddContactScreenState extends State<AddContactScreen> {
 
                   const SizedBox(height: 32),
 
-                  // Bouton de création
                   SizedBox(
                     width: double.infinity,
                     height: 50,
